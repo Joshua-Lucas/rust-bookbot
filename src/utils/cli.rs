@@ -1,4 +1,4 @@
-use clap::Parser;
+pub use clap::Parser;
 
 #[derive(Parser, Debug)]
 #[clap()]

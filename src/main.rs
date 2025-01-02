@@ -4,10 +4,18 @@ use clap::Parser;
 
 use crate::utils::cli::Opts;
 
-pub mod utils;
+mod utils {
+    pub mod cli;
+}
 
 #[derive(PartialEq, Debug)]
 struct Letter {
+    name: char,
+    count: i32,
+}
+
+#[derive(PartialEq, Debug)]
+struct Letters {
     a: i32,
     b: i32,
     c: i32,
@@ -36,6 +44,137 @@ struct Letter {
     z: i32,
 }
 
+// Method to format the Letters Struct
+impl Letters {
+    // returns a vec of the fields to be itered
+    fn iter_fields(&self) -> Vec<Letter> {
+        vec![
+            Letter {
+                name: 'a',
+                count: self.a,
+            },
+            Letter {
+                name: 'b',
+                count: self.b,
+            },
+            Letter {
+                name: 'c',
+                count: self.c,
+            },
+            Letter {
+                name: 'd',
+                count: self.d,
+            },
+            Letter {
+                name: 'e',
+                count: self.e,
+            },
+            Letter {
+                name: 'f',
+                count: self.f,
+            },
+            Letter {
+                name: 'g',
+                count: self.g,
+            },
+            Letter {
+                name: 'h',
+                count: self.h,
+            },
+            Letter {
+                name: 'i',
+                count: self.i,
+            },
+            Letter {
+                name: 'j',
+                count: self.j,
+            },
+            Letter {
+                name: 'k',
+                count: self.k,
+            },
+            Letter {
+                name: 'l',
+                count: self.l,
+            },
+            Letter {
+                name: 'm',
+                count: self.m,
+            },
+            Letter {
+                name: 'n',
+                count: self.n,
+            },
+            Letter {
+                name: 'o',
+                count: self.o,
+            },
+            Letter {
+                name: 'p',
+                count: self.p,
+            },
+            Letter {
+                name: 'q',
+                count: self.q,
+            },
+            Letter {
+                name: 'r',
+                count: self.r,
+            },
+            Letter {
+                name: 's',
+                count: self.s,
+            },
+            Letter {
+                name: 't',
+                count: self.t,
+            },
+            Letter {
+                name: 'u',
+                count: self.u,
+            },
+            Letter {
+                name: 'v',
+                count: self.v,
+            },
+            Letter {
+                name: 'w',
+                count: self.w,
+            },
+            Letter {
+                name: 'x',
+                count: self.x,
+            },
+            Letter {
+                name: 'y',
+                count: self.y,
+            },
+            Letter {
+                name: 'z',
+                count: self.z,
+            },
+        ]
+    }
+
+    //sorts letter count in descending order.
+    fn sort_letters(&self) -> Vec<Letter> {
+        let mut letters = self.iter_fields();
+
+        letters.sort_by(|a, b| b.count.cmp(&a.count));
+
+        return letters;
+    }
+
+    // Prints a formatted count in order of most occurrences to least.
+    fn print_count(&self) {
+        let letters = self.sort_letters();
+
+        letters
+            .iter()
+            .for_each(|x| println!("The '{}' character was found {} times", x.name, x.count))
+    }
+}
+
 fn main() {
     // Get options on CLI command
     let opts = Opts::parse();
@@ -48,8 +187,12 @@ fn main() {
 
     match book_string {
         Ok(value) => {
-            println!("There are {} words in {}.", word_count(&value), title);
-            println!("{:?}", char_count(&value))
+            println!("--- Begin report of {} ---", title);
+            println!("");
+            println!("{} words in the document.", word_count(&value));
+            println!("");
+            char_count(&value).print_count();
+            println!("--- End report ---");
         }
         Err(e) => println!("Error: {}", e),
     }
@@ -61,8 +204,8 @@ fn word_count(text: &String) -> usize {
 }
 
 // Counts the occurrence of all characters in the book.
-fn char_count(text: &String) -> Letter {
-    let mut letter_count = Letter {
+fn char_count(text: &String) -> Letters {
+    let mut letter_count = Letters {
         a: 0,
         b: 0,
         c: 0,
@@ -157,7 +300,7 @@ mod tests {
         let test_cases = vec![
             (
                 "abcdefghijklmnopqrstuvwxyz",
-                Letter {
+                Letters {
                     a: 1,
                     b: 1,
                     c: 1,
@@ -188,7 +331,7 @@ mod tests {
             ),
             (
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-                Letter {
+                Letters {
                     a: 2,
                     b: 2,
                     c: 2,
@@ -219,7 +362,7 @@ mod tests {
             ),
             (
                 "()!#&*.,abcdefghijklmnopqrstuvwxyz",
-                Letter {
+                Letters {
                     a: 1,
                     b: 1,
                     c: 1,
